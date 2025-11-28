@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/ahmedennaifer/taskq/internal"
+	"github.com/ahmedennaifer/taskq/internal/publisher"
 	"github.com/google/uuid"
 )
 
@@ -36,24 +36,20 @@ func (c *Cache) Add(task internal.Task) error {
 func handlePost(w http.ResponseWriter, r *http.Request) {
 	task := internal.NewTask()
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
-		fmt.Printf("error decoding payload: %v\n", err)
 		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
 		return
 	}
-	if err := task.Validate(); err != nil {
-		fmt.Printf("%v\n", err)
+	if err := task.ValidateFields(); err != nil {
 		http.Error(w, fmt.Sprintf("%v\n", err), 500)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	if err := cache.Add(*task); err != nil {
-		fmt.Printf("%v\n", err)
 		http.Error(w, fmt.Sprintf("%v\n", err), 500)
 		return
 	}
 
 	if err := json.NewEncoder(w).Encode(map[string]string{"status": "success"}); err != nil {
-		fmt.Printf("error encoding payload: %v\n", err)
 		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
 		return
 	}
@@ -62,7 +58,6 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 func handleGet(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(cache.Db); err != nil {
-		fmt.Printf("error encoding payload: %v\n", err)
 		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
 		return
 	}
@@ -71,5 +66,6 @@ func handleGet(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("POST /api/v1/task", handlePost)
 	http.HandleFunc("GET /api/v1/task", handleGet)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	publisher.CreateTopics()
+	// log.Fatal(http.ListenAndServe(":8081", nil))
 }

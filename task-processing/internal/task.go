@@ -27,7 +27,7 @@ func fieldEmptyError(field string) error {
 	return fmt.Errorf("error: field %v cannot be empty", field)
 }
 
-func (t *Task) Validate() error {
+func (t *Task) ValidateFields() error {
 	if t.Name == "" {
 		return fieldEmptyError("name")
 	}
