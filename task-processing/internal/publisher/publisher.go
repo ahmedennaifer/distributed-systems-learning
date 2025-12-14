@@ -87,13 +87,14 @@ func Init() (*KafkaClient, error) {
 	return kafkaClient, nil
 }
 
-func (kClient *KafkaClient) Publish(topic string, message []byte) error {
+func (kClient *KafkaClient) Publish(topic string, key, message []byte) error {
 	brokers := []string{kClient.Config.Addr}
 	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: brokers,
 		Topic:   topic,
 	})
 	kMsg := kafka.Message{
+		Key:   key,
 		Value: message,
 	}
 	if err := w.WriteMessages(context.TODO(), kMsg); err != nil {

@@ -118,7 +118,12 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("error: cannot marshal task: %v", err), 500)
 		return
 	}
-	if err := s.kafkaClient.Publish("tasks", taskBytes); err != nil {
+	if err != nil {
+		s.logger.Error("failed to marshal task", "taskID", task.ID, "error", err)
+		http.Error(w, fmt.Sprintf("error: cannot marshal task: %v", err), 500)
+		return
+	}
+	if err := s.kafkaClient.Publish("tasks", task.ID, taskBytes); err != nil {
 		s.logger.Error("failed to send task to workers", "taskID", task.ID, "error", err)
 		http.Error(w, fmt.Sprintf("error: failed to send task to workers: %v", err), 500)
 		return
