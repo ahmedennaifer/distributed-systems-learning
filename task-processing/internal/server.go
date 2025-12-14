@@ -126,9 +126,9 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := s.kafkaClient.Publish("tasks", taskIDBytes, taskBytes); err != nil {
 		s.logger.Error("failed to send task to workers", "taskID", task.ID, "error", err)
-		http.Error(w, fmt.Sprintf("error: failed to send task to workers: %v", err), 500)
+		http.Error(w, fmt.Sprintf("error: failed to send task to workers: %v", err), 503)
 		return
 	}
-	w.WriteHeader(201)
-	s.logger.Info("task creation submitted successfully", "taskID", task.ID)
+	w.WriteHeader(202)
+	s.logger.Info("task accepted", "taskID", task.ID)
 }
