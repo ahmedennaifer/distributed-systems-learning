@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -40,4 +41,12 @@ func (t *Task) ValidateFields() error {
 		return fieldEmptyError("body")
 	}
 	return nil
+}
+
+func (t *Task) Marshall() ([]byte, error) {
+	payload, err := json.Marshal(t)
+	if err != nil {
+		return nil, fmt.Errorf("error: cannot marshal task: %v\n", err)
+	}
+	return payload, nil
 }

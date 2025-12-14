@@ -1,6 +1,7 @@
 package publisher
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"strconv"
@@ -13,6 +14,7 @@ type KafkaClient struct {
 	ControllerConn *kafka.Conn
 	Topics         []kafka.TopicConfig
 	Err            error
+	Writer         *kafka.Writer
 }
 
 func NewKafkaClient() *KafkaClient {
@@ -83,4 +85,20 @@ func Init() (*KafkaClient, error) {
 
 	fmt.Printf("Created %v topic(s)\n", len(kafkaClient.Topics))
 	return kafkaClient, nil
+}
+
+func (kClient *KafkaClient) Publish(topic string, message []byte) error {
+	brokers := []string{kClient.Config.Addr}
+	w := kafka.NewWriter(kafka.WriterConfig{
+		Brokers: brokers,
+		Topic:   topic,
+	})
+	kMsg := kafka.Message{
+		Value: message,
+	}
+	if err := w.WriteMessages(context.TODO(), kMsg); err != nil {
+		return fmt.Errorf("error sending message : %v to topic %v:", string(message), topic, err)
+	}
+	fmt.Println("sent message %v to topic %v", string(message), topic)
+	return nil
 }

@@ -11,10 +11,10 @@ import (
 )
 
 type Server struct {
-	addr      string
-	taskCache *Cache
-	publisher *publisher.KafkaClient
-	logger    *slog.Logger
+	addr        string
+	taskCache   *Cache
+	kafkaClient *publisher.KafkaClient
+	logger      *slog.Logger
 }
 
 func NewServer(addr string, cache *Cache) (*Server, error) {
@@ -23,16 +23,16 @@ func NewServer(addr string, cache *Cache) (*Server, error) {
 
 	pubClient, err := publisher.Init()
 	if err != nil {
-		logger.Error("failed to init publisher", "error", err)
-		fmt.Println("error: cannot init publisher: ", err)
+		logger.Error("failed to init kafkaClient", "error", err)
+		fmt.Println("error: cannot init kafkaClient: ", err)
 		return &Server{}, err
 	}
 	logger.Info("server initialized successfully")
 	return &Server{
-		addr:      addr,
-		taskCache: cache,
-		publisher: pubClient,
-		logger:    logger,
+		addr:        addr,
+		taskCache:   cache,
+		kafkaClient: pubClient,
+		logger:      logger,
 	}, nil
 }
 
@@ -112,6 +112,17 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
 		return
 	}
-
-	s.logger.Info("task creation completed successfully", "taskID", task.ID)
+	taskBytes, err := task.Marshall()
+	if err != nil {
+		s.logger.Error("failed to marshal task", "taskID", task.ID, "error", err)
+		http.Error(w, fmt.Sprintf("error: cannot marshal task: %v", err), 500)
+		return
+	}
+	if err := s.kafkaClient.Publish("tasks", taskBytes); err != nil {
+		s.logger.Error("failed to send task to workers", "taskID", task.ID, "error", err)
+		http.Error(w, fmt.Sprintf("error: failed to send task to workers: %v", err), 500)
+		return
+	}
+	w.WriteHeader(201)
+	s.logger.Info("task creation submitted successfully", "taskID", task.ID)
 }
