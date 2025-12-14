@@ -37,7 +37,7 @@ func NewServer(addr string, cache *Cache) (*Server, error) {
 }
 
 func (s *Server) HandleGetTasks(w http.ResponseWriter, r *http.Request) {
-	s.logger.Info("handling get tasks request")
+	s.logger.Debug("handling get tasks request")
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(s.taskCache.Db); err != nil {
@@ -51,7 +51,7 @@ func (s *Server) HandleGetTasks(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) HandleGetTaskByID(w http.ResponseWriter, r *http.Request) {
 	taskID := r.PathValue("taskID")
-	s.logger.Info("handling get task by ID request", "taskID", taskID)
+	s.logger.Debug("handling get task by ID request", "taskID", taskID)
 
 	if taskID == "" {
 		s.logger.Warn("taskID is empty")
@@ -82,7 +82,7 @@ func (s *Server) HandleGetTaskByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
-	s.logger.Info("handling post task request")
+	s.logger.Debug("handling post task request")
 
 	task := NewTask()
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
