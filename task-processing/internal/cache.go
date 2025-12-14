@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+
 	"github.com/google/uuid"
 )
 
@@ -29,7 +30,7 @@ func (c *Cache) Add(task Task) error {
 func (c *Cache) Get(taskID uuid.UUID) (Task, error) {
 	task, exists := c.Db[taskID]
 	if !exists {
-		fmt.Printf("task %v does not exist\n", task.ID)
+		fmt.Printf("task %v does not exist\n", taskID)
 		return Task{}, fmt.Errorf("task %v does not exist\n", task.ID)
 	}
 	return task, nil

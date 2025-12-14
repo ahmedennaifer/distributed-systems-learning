@@ -55,19 +55,19 @@ func (s *Server) HandleGetTaskByID(w http.ResponseWriter, r *http.Request) {
 
 	if taskID == "" {
 		s.logger.Warn("taskID is empty")
-		http.Error(w, fmt.Sprintf("error: taskID cannot be nul\n"), 401)
+		http.Error(w, fmt.Sprintf("error: taskID cannot be nul\n"), 400)
 		return
 	}
 	parsed, err := uuid.Parse(taskID)
 	if err != nil {
 		s.logger.Warn("malformed task ID", "taskID", taskID, "error", err)
-		http.Error(w, fmt.Sprintf("error: malformed task id: %v\n", taskID), 401)
+		http.Error(w, fmt.Sprintf("error: malformed task id: %v\n", taskID), 400)
 		return
 	}
 	task, err := s.taskCache.Get(parsed)
 	if err != nil {
 		s.logger.Error("failed to get task from cache", "taskID", parsed, "error", err)
-		http.Error(w, fmt.Sprintf("error: %v\n", err), 401)
+		http.Error(w, fmt.Sprintf("error: %v\n", err), 400)
 		return
 	}
 

@@ -14,7 +14,6 @@ type KafkaClient struct {
 	ControllerConn *kafka.Conn
 	Topics         []kafka.TopicConfig
 	Err            error
-	Writer         *kafka.Writer
 }
 
 func NewKafkaClient() *KafkaClient {
