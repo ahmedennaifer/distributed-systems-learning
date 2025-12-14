@@ -51,7 +51,7 @@ func (k *KafkaClient) WithTopics(topics []kafka.TopicConfig) *KafkaClient {
 	return k
 }
 
-func CreateTopics() error {
+func Init() (*KafkaClient, error) {
 	cfg := NewKafkaConfig("tcp", "broker:9092")
 	kafkaClient, err := NewKafkaClient().
 		WithConfig(cfg).
@@ -61,21 +61,26 @@ func CreateTopics() error {
 				NumPartitions:     1,
 				ReplicationFactor: 1,
 			},
+			{
+				Topic:             "failed_tasks", // dead letter queue?
+				NumPartitions:     1,
+				ReplicationFactor: 1,
+			},
 		}).
 		SetupController()
 	if err != nil {
 		fmt.Printf("%v", err)
-		return err
+		return &KafkaClient{}, err
 	}
 
 	for _, topic := range kafkaClient.Topics {
 		if err := kafkaClient.ControllerConn.CreateTopics(topic); err != nil {
 			fmt.Printf("failed to create topics: %v\n", err)
-			return err
+			return &KafkaClient{}, err
 		}
 		fmt.Printf("Successfully created topic: %v\n", topic.Topic)
 	}
 
 	fmt.Printf("Created %v topic(s)\n", len(kafkaClient.Topics))
-	return nil
+	return kafkaClient, nil
 }
