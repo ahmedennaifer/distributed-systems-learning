@@ -8,8 +8,9 @@ import (
 )
 
 type Task struct {
-	Id         uuid.UUID      `json:"id"`
+	ID         uuid.UUID      `json:"id"`
 	Name       string         `json:"name"`
+	Status     string         `json:"status"`
 	Type       string         `json:"type"`
 	Params     map[string]any `json:"body"`
 	CreatedAt  time.Time      `json:"created_at"`
@@ -18,8 +19,9 @@ type Task struct {
 
 func NewTask() *Task {
 	return &Task{
-		Id:        uuid.New(),
+		ID:        uuid.New(),
 		CreatedAt: time.Now(),
+		Status:    "Pending",
 	}
 }
 
