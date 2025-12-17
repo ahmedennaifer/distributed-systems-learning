@@ -5,16 +5,19 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/ahmedennaifer/taskq/internal/publisher"
+	"github.com/ahmedennaifer/taskq/pkg"
 	"github.com/google/uuid"
 )
 
 type Server struct {
-	addr        string
+	Addr        string
 	taskCache   *Cache
 	kafkaClient *publisher.KafkaClient
 	logger      *slog.Logger
+	workers     []uuid.UUID
 }
 
 func NewServer(addr string, cache *Cache) (*Server, error) {
@@ -28,7 +31,7 @@ func NewServer(addr string, cache *Cache) (*Server, error) {
 	}
 	logger.Info("server initialized successfully")
 	return &Server{
-		addr:        addr,
+		Addr:        addr,
 		taskCache:   cache,
 		kafkaClient: pubClient,
 		logger:      logger,
@@ -130,4 +133,42 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(202)
 	s.logger.Info("task accepted", "taskID", task.ID)
+}
+
+func (s *Server) HandleRegisterWorker(w http.ResponseWriter, r *http.Request) {
+	secret := os.Getenv("SECRET_KEY")
+	var rp pkg.RegisterPayload
+	if secret == "" {
+		s.logger.Error("cannot find secret key")
+		http.Error(w, fmt.Sprintf("error: server cannot verify worker. try again later"), 500)
+		return
+	}
+	err := json.NewDecoder(r.Body).Decode(&rp)
+	if err != nil {
+		s.logger.Error("cannot decode json payload")
+		http.Error(w, fmt.Sprintf("error: cannot decode worker payload"), 400)
+		return
+	}
+	canRegister := pkg.VerifyHash(rp, secret)
+	if !canRegister {
+		s.logger.Warn("cannot register worker with id", "workerID", rp.WorkerID)
+		http.Error(w, fmt.Sprintf("error verifying worker"), 401)
+		return
+	}
+	workerUUID, _ := uuid.Parse(rp.WorkerID)
+	// TODO: check if exists
+	s.workers = append(s.workers, workerUUID)
+}
+
+func (s *Server) HandleListWorkers(w http.ResponseWriter, r *http.Request) {
+	s.logger.Debug("handling get workers request")
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := json.NewEncoder(w).Encode(s.workers); err != nil {
+		s.logger.Error("failed to encode workers", "error", err)
+		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
+		return
+	}
+
+	s.logger.Info("successfully returned all workers", "count", len(s.workers))
 }

@@ -92,6 +92,7 @@ func (kClient *KafkaClient) Publish(topic string, key, message []byte) error {
 		Brokers: brokers,
 		Topic:   topic,
 	})
+	defer w.Close()
 	kMsg := kafka.Message{
 		Key:   key,
 		Value: message,
