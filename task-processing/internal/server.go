@@ -24,7 +24,6 @@ func NewServer(addr string, cache *Cache) (*Server, error) {
 	pubClient, err := publisher.Init()
 	if err != nil {
 		logger.Error("failed to init kafkaClient", "error", err)
-		fmt.Println("error: cannot init kafkaClient: ", err)
 		return &Server{}, err
 	}
 	logger.Info("server initialized successfully")
