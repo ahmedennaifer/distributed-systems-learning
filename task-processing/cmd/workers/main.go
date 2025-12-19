@@ -2,18 +2,35 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/ahmedennaifer/taskq/internal"
 	"github.com/ahmedennaifer/taskq/internal/workers"
 )
+
+func getRandomPort() int {
+	rand.Seed(time.Now().UnixNano())
+	excludedPorts := map[int]bool{8000: true, 8080: true, 8081: true}
+
+	for {
+		port := 8000 + rand.Intn(1000)
+		if !excludedPorts[port] {
+			return port
+		}
+	}
+}
 
 func main() {
 	logger := internal.NewLogger("worker.log")
 	fmt.Println("Starting worker application...")
 	logger.Info("starting worker application")
 
-	w, err := workers.NewWorker(":8001", logger)
+	port := getRandomPort()
+	addr := fmt.Sprintf(":%d", port)
+
+	w, err := workers.NewWorker(addr, logger)
 	if err != nil {
 		fmt.Printf("ERROR: Failed to create worker: %v\n", err)
 		logger.Error("failed to create worker", "error", err)
