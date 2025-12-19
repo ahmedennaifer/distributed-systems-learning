@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/ahmedennaifer/taskq/internal/publisher"
+	"github.com/ahmedennaifer/taskq/internal/workers"
 	"github.com/ahmedennaifer/taskq/pkg"
 	"github.com/google/uuid"
 )
@@ -17,7 +18,7 @@ type Server struct {
 	taskCache   *Cache
 	kafkaClient *publisher.KafkaClient
 	logger      *slog.Logger
-	workers     []uuid.UUID
+	workers     []workers.Worker
 }
 
 func NewServer(addr string, cache *Cache) (*Server, error) {
@@ -136,28 +137,27 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) HandleRegisterWorker(w http.ResponseWriter, r *http.Request) {
+	var wrk workers.Worker
 	secret := os.Getenv("SECRET_KEY")
-	var rp pkg.RegisterPayload
 	if secret == "" {
 		s.logger.Error("cannot find secret key")
 		http.Error(w, fmt.Sprintf("error: server cannot verify worker. try again later"), 500)
 		return
 	}
-	err := json.NewDecoder(r.Body).Decode(&rp)
+	err := json.NewDecoder(r.Body).Decode(&wrk)
 	if err != nil {
 		s.logger.Error("cannot decode json payload")
 		http.Error(w, fmt.Sprintf("error: cannot decode worker payload"), 400)
 		return
 	}
-	canRegister := pkg.VerifyHash(rp, secret)
+	canRegister := pkg.VerifyHash(wrk.ID.String(), wrk.Hash, secret)
 	if !canRegister {
-		s.logger.Warn("cannot register worker with id", "workerID", rp.WorkerID)
+		s.logger.Warn("cannot register worker with id", "workerID", wrk.ID)
 		http.Error(w, fmt.Sprintf("error verifying worker"), 401)
 		return
 	}
-	workerUUID, _ := uuid.Parse(rp.WorkerID)
 	// TODO: check if exists
-	s.workers = append(s.workers, workerUUID)
+	s.workers = append(s.workers, wrk)
 }
 
 func (s *Server) HandleListWorkers(w http.ResponseWriter, r *http.Request) {

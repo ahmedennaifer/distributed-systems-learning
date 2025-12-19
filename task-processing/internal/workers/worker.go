@@ -3,33 +3,72 @@ package workers
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/ahmedennaifer/taskq/pkg"
 	"github.com/google/uuid"
 )
 
+type WorkerStatus string
+
+const (
+	StatusHealthy   WorkerStatus = "healthy"
+	StatusUnhealthy WorkerStatus = "unhealthy"
+	StatusStarting  WorkerStatus = "starting"
+)
+
 type Worker struct {
 	ID           uuid.UUID
-	State        string
 	Addr         string
 	CurrentTask  uuid.UUID
-	Subscribtion any
+	Subscription any
+	logger       *slog.Logger
+	Status       WorkerStatus
+	LastSeen     time.Time
+	LastChecked  time.Time
+	Hash         string
 }
 
-func NewWorker(port string) (*Worker, error) {
+func NewWorker(port string, logger *slog.Logger) (*Worker, error) {
+	logger.Info("creating new worker", "port", port)
+
 	addr, err := getWorkerAddr()
 	if err != nil {
+		logger.Error("failed to get worker address", "error", err)
 		return &Worker{}, err
 	}
+
 	strAddr := addr.String()
 	strAddr = strAddr[:len(strAddr)-3]
+	workerID := uuid.New()
+
+	// hash will be used to register itself
+
+	secret := os.Getenv("SECRET_KEY")
+	if secret == "" {
+		logger.Error("secret key not found in environment")
+		return &Worker{}, errors.New("secret key not found")
+	}
+
+	hash, err := pkg.Hash(workerID.String(), secret)
+	if err != nil {
+		logger.Error("failed to hash worker ID", "workerID", workerID, "error", err)
+		return &Worker{}, errors.New("cannot hash worker id")
+	}
+
+	logger.Info("worker created successfully", "workerID", workerID, "addr", strAddr+port)
+
 	return &Worker{
-		ID:    uuid.New(),
-		State: "Starting",
-		Addr:  strAddr + port,
+		ID:       workerID,
+		Status:   StatusStarting,
+		Addr:     strAddr + port,
+		logger:   logger,
+		Hash:     hash,
+		LastSeen: time.Now(),
 	}, nil
 }
 
@@ -53,29 +92,22 @@ func (w *Worker) Init() error {
 }
 
 func (wrk *Worker) HandleHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("healthy")
+	wrk.logger.Debug("health check request received")
 	w.WriteHeader(http.StatusOK)
+	wrk.logger.Debug("health check response sent")
 }
 
-func (w *Worker) Register(managerUrl string) error {
-	secret := os.Getenv("SECRET_KEY")
-	if secret == "" {
-		return errors.New("secret key not found")
-	}
-	hash, err := pkg.Hash(w.ID.String(), secret)
-	if err != nil {
-		return errors.New("cannot hash worker id")
-	}
+func (wrk *Worker) Register(managerUrl string) error {
+	wrk.logger.Info("registering worker with manager", "managerUrl", managerUrl, "workerID", wrk.ID)
 	endpoint := managerUrl + "/worker"
-	fmt.Println(endpoint)
-	payload := pkg.RegisterPayload{
-		Hash:     hash,
-		WorkerID: w.ID.String(),
-	}
-	resp, err := pkg.PostRequest(endpoint, payload)
+	wrk.logger.Debug("registration endpoint", "endpoint", endpoint)
+
+	resp, err := pkg.PostRequest(endpoint, wrk)
 	if err != nil {
+		wrk.logger.Error("registration request failed", "endpoint", endpoint, "error", err)
 		return err
 	}
-	fmt.Println("response: ", string(resp))
+
+	wrk.logger.Info("worker registered successfully", "workerID", wrk.ID, "response", string(resp))
 	return nil
 }

@@ -1,22 +1,34 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
+	"github.com/ahmedennaifer/taskq/internal"
 	"github.com/ahmedennaifer/taskq/internal/workers"
 )
 
 func main() {
-	w, _ := workers.NewWorker(":8001")
-	err := w.Register("http://localhost:8081/api/v1")
+	logger := internal.NewLogger()
+	logger.Info("starting worker application")
+
+	w, err := workers.NewWorker(":8001", logger)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("failed to create worker", "error", err)
 		return
 	}
-	fmt.Println("Successfully registered worker ", w.ID.String())
-	fmt.Println("addr: ", w.Addr)
+
+	err = w.Register("http://localhost:8081/api/v1")
+	if err != nil {
+		logger.Error("failed to register worker", "error", err)
+		return
+	}
+
+	logger.Info("worker ready to accept requests", "workerID", w.ID, "addr", w.Addr)
+
 	http.HandleFunc("GET /health", w.HandleHealth)
-	log.Fatal(http.ListenAndServe(w.Addr, nil))
+
+	logger.Info("starting http server", "addr", w.Addr)
+	if err := http.ListenAndServe(w.Addr, nil); err != nil {
+		logger.Error("http server failed", "error", err)
+	}
 }

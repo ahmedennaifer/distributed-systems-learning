@@ -6,11 +6,6 @@ import (
 	"encoding/base64"
 )
 
-type RegisterPayload struct {
-	Hash     string
-	WorkerID string
-}
-
 func Hash(data string, secretKey string) (string, error) {
 	hasher := hmac.New(sha256.New, []byte(secretKey))
 	_, err := hasher.Write([]byte(data))
@@ -21,10 +16,10 @@ func Hash(data string, secretKey string) (string, error) {
 	return sha, nil
 }
 
-func VerifyHash(payload RegisterPayload, secretKey string) bool {
-	serverHash, err := Hash(payload.WorkerID, secretKey)
+func VerifyHash(workerID, hash, secretKey string) bool {
+	serverHash, err := Hash(workerID, secretKey)
 	if err != nil {
 		return false
 	}
-	return serverHash == payload.Hash
+	return serverHash == hash
 }
