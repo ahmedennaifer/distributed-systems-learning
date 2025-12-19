@@ -2,10 +2,12 @@ package internal
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/ahmedennaifer/taskq/internal/publisher"
 	"github.com/ahmedennaifer/taskq/internal/workers"
@@ -18,11 +20,11 @@ type Server struct {
 	taskCache   *Cache
 	kafkaClient *publisher.KafkaClient
 	logger      *slog.Logger
-	workers     []workers.Worker
+	workers     map[uuid.UUID]*workers.Worker
 }
 
 func NewServer(addr string, cache *Cache) (*Server, error) {
-	logger := NewLogger()
+	logger := NewLogger("server.log")
 	logger.Info("initializing server", "addr", addr)
 
 	pubClient, err := publisher.Init()
@@ -36,6 +38,7 @@ func NewServer(addr string, cache *Cache) (*Server, error) {
 		taskCache:   cache,
 		kafkaClient: pubClient,
 		logger:      logger,
+		workers:     make(map[uuid.UUID]*workers.Worker, 0),
 	}, nil
 }
 
@@ -137,6 +140,8 @@ func (s *Server) HandlePostTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) HandleRegisterWorker(w http.ResponseWriter, r *http.Request) {
+	s.logger.Info("received worker registration request")
+
 	var wrk workers.Worker
 	secret := os.Getenv("SECRET_KEY")
 	if secret == "" {
@@ -146,7 +151,7 @@ func (s *Server) HandleRegisterWorker(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&wrk)
 	if err != nil {
-		s.logger.Error("cannot decode json payload")
+		s.logger.Error("cannot decode json payload", "error", err)
 		http.Error(w, fmt.Sprintf("error: cannot decode worker payload"), 400)
 		return
 	}
@@ -157,13 +162,18 @@ func (s *Server) HandleRegisterWorker(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// TODO: check if exists
-	s.workers = append(s.workers, wrk)
+	s.workers[wrk.ID] = &wrk
+
+	s.logger.Info("worker registered successfully", "workerID", wrk.ID, "addr", wrk.Addr)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"status": "registered", "worker_id": wrk.ID.String()})
 }
 
 func (s *Server) HandleListWorkers(w http.ResponseWriter, r *http.Request) {
 	s.logger.Debug("handling get workers request")
 	w.Header().Set("Content-Type", "application/json")
 
+	// todo: hide hash field
 	if err := json.NewEncoder(w).Encode(s.workers); err != nil {
 		s.logger.Error("failed to encode workers", "error", err)
 		http.Error(w, fmt.Sprintf("error: cannot decode payload: %v", err), 500)
@@ -171,4 +181,41 @@ func (s *Server) HandleListWorkers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s.logger.Info("successfully returned all workers", "count", len(s.workers))
+}
+
+// healthcheck?
+// loop / goroutine that checks all workers
+func (s *Server) RunHealthCheck() {
+	go func() {
+		ticker := time.NewTicker(1 * time.Second)
+		for range ticker.C {
+			for id, worker := range s.workers {
+				status, err := s.checkWorkerStatus(id)
+				if err != nil {
+					fmt.Printf("worker %v responded with: err %v status %v\n", id, err, status)
+				}
+				fmt.Printf("worker %v responded with: %v\n", worker, status)
+			}
+		}
+	}()
+}
+
+func (s *Server) checkWorkerStatus(workerID uuid.UUID) (workers.WorkerStatus, error) {
+	worker, workerExists := s.workers[workerID]
+	if !workerExists {
+		return workers.StatusUnhealthy, errors.New(fmt.Sprintf("workerID %v does not exist", workerID))
+	}
+	response, err := pkg.GetRequest("http://" + worker.Addr + "/health")
+	if err != nil {
+		s.logger.Warn("worker failed health check", "workerID", worker.ID, "time", time.Now())
+		return workers.StatusUnhealthy, err
+	}
+	status := string(response)
+	switch status {
+	case "healthy":
+		return workers.StatusHealthy, nil
+	default:
+		fmt.Println("status: ", status)
+		return workers.StatusUnknown, nil
+	}
 }

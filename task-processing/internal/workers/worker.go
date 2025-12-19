@@ -17,6 +17,7 @@ type WorkerStatus string
 
 const (
 	StatusHealthy   WorkerStatus = "healthy"
+	StatusUnknown   WorkerStatus = "unknown"
 	StatusUnhealthy WorkerStatus = "unhealthy"
 	StatusStarting  WorkerStatus = "starting"
 )
@@ -93,7 +94,8 @@ func (w *Worker) Init() error {
 
 func (wrk *Worker) HandleHealth(w http.ResponseWriter, r *http.Request) {
 	wrk.logger.Debug("health check request received")
-	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("healthy"))
+	fmt.Printf("health checked at: %v\n", time.Now())
 	wrk.logger.Debug("health check response sent")
 }
 
@@ -102,7 +104,7 @@ func (wrk *Worker) Register(managerUrl string) error {
 	endpoint := managerUrl + "/worker"
 	wrk.logger.Debug("registration endpoint", "endpoint", endpoint)
 
-	resp, err := pkg.PostRequest(endpoint, wrk)
+	resp, err := pkg.PostRequest(endpoint, *wrk)
 	if err != nil {
 		wrk.logger.Error("registration request failed", "endpoint", endpoint, "error", err)
 		return err

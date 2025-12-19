@@ -1,0 +1,124 @@
+{"time":"2025-12-19T19:15:48.377801+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T19:15:48.377963+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T19:15:48.378074+01:00","level":"INFO","msg":"worker created successfully","workerID":"d6e4a499-8cb3-450f-8fad-36ae6267a914","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T19:15:48.378116+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"d6e4a499-8cb3-450f-8fad-36ae6267a914"}
+{"time":"2025-12-19T19:15:48.378121+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T19:15:48.391127+01:00","level":"INFO","msg":"worker registered successfully","workerID":"d6e4a499-8cb3-450f-8fad-36ae6267a914","response":""}
+{"time":"2025-12-19T19:15:48.391159+01:00","level":"INFO","msg":"worker ready to accept requests","workerID":"d6e4a499-8cb3-450f-8fad-36ae6267a914","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T19:15:48.391277+01:00","level":"INFO","msg":"starting http server","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:24:10.931959+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:24:10.932511+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:24:10.932618+01:00","level":"INFO","msg":"worker created successfully","workerID":"e24795f9-aee9-438e-ba0d-3da674a3a181","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:24:10.932662+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"e24795f9-aee9-438e-ba0d-3da674a3a181"}
+{"time":"2025-12-19T20:24:10.932667+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:24:10.937239+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60549->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:24:10.937273+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60549->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:24:18.824404+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:24:18.824896+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:24:18.825027+01:00","level":"INFO","msg":"worker created successfully","workerID":"33408825-6910-45bb-8e65-3f0b64bf1f36","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:24:18.825069+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"33408825-6910-45bb-8e65-3f0b64bf1f36"}
+{"time":"2025-12-19T20:24:18.825074+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:24:18.829446+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60552->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:24:18.829465+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60552->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:24:31.430429+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:24:31.43184+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:24:31.432546+01:00","level":"INFO","msg":"worker created successfully","workerID":"500726ea-4296-416d-8d9b-7c6daa54a371","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:24:31.432642+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"500726ea-4296-416d-8d9b-7c6daa54a371"}
+{"time":"2025-12-19T20:24:31.432648+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:24:31.440902+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60555->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:24:31.440931+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:60555->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:32:29.283881+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:32:29.284599+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:32:29.28471+01:00","level":"INFO","msg":"worker created successfully","workerID":"a527dfd9-ecdf-47ba-9289-51b97777df48","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:32:29.284752+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"a527dfd9-ecdf-47ba-9289-51b97777df48"}
+{"time":"2025-12-19T20:32:29.284757+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:32:29.291068+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61087->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:32:29.291087+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61087->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:47:51.119215+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:47:51.119885+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:47:51.120019+01:00","level":"INFO","msg":"worker created successfully","workerID":"ea298074-52e3-4ad8-a2e4-0eee408f11bc","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:47:51.12007+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"ea298074-52e3-4ad8-a2e4-0eee408f11bc"}
+{"time":"2025-12-19T20:47:51.120077+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:47:51.123886+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": dial tcp [::1]:8081: connect: connection refused"}
+{"time":"2025-12-19T20:47:51.123933+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": dial tcp [::1]:8081: connect: connection refused"}
+{"time":"2025-12-19T20:48:02.725176+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:48:02.725688+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:48:02.725843+01:00","level":"INFO","msg":"worker created successfully","workerID":"27483d5b-e758-4a81-a687-30864ae69b14","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:48:02.725897+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"27483d5b-e758-4a81-a687-30864ae69b14"}
+{"time":"2025-12-19T20:48:02.725903+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:48:02.730158+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61470->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:48:02.730196+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61470->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:48:24.188244+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:48:24.189592+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:48:24.190499+01:00","level":"INFO","msg":"worker created successfully","workerID":"bb959bd6-9c94-4d37-add3-2c8b0e00b103","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:48:24.191151+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"bb959bd6-9c94-4d37-add3-2c8b0e00b103"}
+{"time":"2025-12-19T20:48:24.191157+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:48:24.198144+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61476->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:48:24.198168+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61476->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:56:35.448992+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:56:35.449767+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:56:35.450077+01:00","level":"INFO","msg":"worker created successfully","workerID":"a6702379-b1a4-4d72-beba-16494da7aaf1","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:56:35.450196+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"a6702379-b1a4-4d72-beba-16494da7aaf1"}
+{"time":"2025-12-19T20:56:35.450209+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:56:35.471003+01:00","level":"ERROR","msg":"registration request failed","endpoint":"http://localhost:8081/api/v1/worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61802->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:56:35.471047+01:00","level":"ERROR","msg":"failed to register worker","error":"Post \"http://localhost:8081/api/v1/worker\": read tcp [::1]:61802->[::1]:8081: read: connection reset by peer"}
+{"time":"2025-12-19T20:59:59.772804+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T20:59:59.773505+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T20:59:59.773618+01:00","level":"INFO","msg":"worker created successfully","workerID":"d091dd19-964c-43d2-8a8d-a6285249332a","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:59:59.773661+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"d091dd19-964c-43d2-8a8d-a6285249332a"}
+{"time":"2025-12-19T20:59:59.773665+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T20:59:59.794238+01:00","level":"INFO","msg":"worker registered successfully","workerID":"d091dd19-964c-43d2-8a8d-a6285249332a","response":"{\"status\":\"registered\",\"worker_id\":\"d091dd19-964c-43d2-8a8d-a6285249332a\"}\n"}
+{"time":"2025-12-19T20:59:59.794298+01:00","level":"INFO","msg":"worker ready to accept requests","workerID":"d091dd19-964c-43d2-8a8d-a6285249332a","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T20:59:59.794428+01:00","level":"INFO","msg":"starting http server","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:04:08.227233+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T21:04:08.227681+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T21:04:08.2278+01:00","level":"INFO","msg":"worker created successfully","workerID":"fd6812fb-8496-459f-95b2-2576d5db56aa","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:04:08.227848+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"fd6812fb-8496-459f-95b2-2576d5db56aa"}
+{"time":"2025-12-19T21:04:08.227881+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T21:04:08.235658+01:00","level":"INFO","msg":"worker registered successfully","workerID":"fd6812fb-8496-459f-95b2-2576d5db56aa","response":"{\"status\":\"registered\",\"worker_id\":\"fd6812fb-8496-459f-95b2-2576d5db56aa\"}\n"}
+{"time":"2025-12-19T21:04:08.235687+01:00","level":"INFO","msg":"worker ready to accept requests","workerID":"fd6812fb-8496-459f-95b2-2576d5db56aa","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:04:08.23574+01:00","level":"INFO","msg":"starting http server","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:07:27.604928+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T21:07:27.605415+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T21:07:27.60555+01:00","level":"INFO","msg":"worker created successfully","workerID":"5ac5ef14-96be-4dda-9d64-158227e4d406","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:07:27.605608+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"5ac5ef14-96be-4dda-9d64-158227e4d406"}
+{"time":"2025-12-19T21:07:27.605615+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T21:07:27.617926+01:00","level":"INFO","msg":"worker registered successfully","workerID":"5ac5ef14-96be-4dda-9d64-158227e4d406","response":"{\"status\":\"registered\",\"worker_id\":\"5ac5ef14-96be-4dda-9d64-158227e4d406\"}\n"}
+{"time":"2025-12-19T21:07:27.617987+01:00","level":"INFO","msg":"worker ready to accept requests","workerID":"5ac5ef14-96be-4dda-9d64-158227e4d406","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:07:27.618124+01:00","level":"INFO","msg":"starting http server","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:09:19.586123+01:00","level":"INFO","msg":"starting worker application"}
+{"time":"2025-12-19T21:09:19.586991+01:00","level":"INFO","msg":"creating new worker","port":":8001"}
+{"time":"2025-12-19T21:09:19.587254+01:00","level":"INFO","msg":"worker created successfully","workerID":"945bd7da-1efa-4751-9656-19f809af4362","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:09:19.587367+01:00","level":"INFO","msg":"registering worker with manager","managerUrl":"http://localhost:8081/api/v1","workerID":"945bd7da-1efa-4751-9656-19f809af4362"}
+{"time":"2025-12-19T21:09:19.587381+01:00","level":"DEBUG","msg":"registration endpoint","endpoint":"http://localhost:8081/api/v1/worker"}
+{"time":"2025-12-19T21:09:19.600473+01:00","level":"INFO","msg":"worker registered successfully","workerID":"945bd7da-1efa-4751-9656-19f809af4362","response":"{\"status\":\"registered\",\"worker_id\":\"945bd7da-1efa-4751-9656-19f809af4362\"}\n"}
+{"time":"2025-12-19T21:09:19.600513+01:00","level":"INFO","msg":"worker ready to accept requests","workerID":"945bd7da-1efa-4751-9656-19f809af4362","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:09:19.600641+01:00","level":"INFO","msg":"starting http server","addr":"192.168.1.131:8001"}
+{"time":"2025-12-19T21:09:19.780367+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:19.780541+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:20.777193+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:20.777482+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:21.772499+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:21.772717+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:22.773506+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:22.773722+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:23.773701+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:23.773966+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:24.773869+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:24.774025+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:25.773909+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:25.774081+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:26.779469+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:26.779813+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:27.775644+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:27.776705+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:28.776019+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:28.776213+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:29.775261+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:29.775529+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:30.773086+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:30.773285+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:31.771456+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:31.771655+01:00","level":"DEBUG","msg":"health check response sent"}
+{"time":"2025-12-19T21:09:32.779236+01:00","level":"DEBUG","msg":"health check request received"}
+{"time":"2025-12-19T21:09:32.779327+01:00","level":"DEBUG","msg":"health check response sent"}
